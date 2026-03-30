@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Feira de Negócios</title>
+  <style>
+    :root {
+      --bg: #f5f7fb;
+      --card: #ffffff;
+      --text: #1f2937;
+      --muted: #6b7280;
+      --primary: #2563eb;
+      --primary-dark: #1d4ed8;
+      --border: #dbe4f0;
+      --success: #16a34a;
+      --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+      --radius: 22px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: linear-gradient(180deg, #eef4ff 0%, var(--bg) 100%);
+      color: var(--text);
+    }
+
+    .container {
+      width: min(1100px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 24px 0 40px;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, #1d4ed8, #2563eb, #60a5fa);
+      color: white;
+      border-radius: var(--radius);
+      padding: 28px;
+      box-shadow: var(--shadow);
+      margin-bottom: 24px;
+    }
+
+    .hero h1 {
+      margin: 0 0 10px;
+      font-size: clamp(1.9rem, 4vw, 3rem);
+      line-height: 1.1;
+      text-align: center;
+    }
+
+    .hero p {
+      margin: 0;
+      font-size: 1rem;
+      line-height: 1.6;
+      text-align: center;
+      max-width: 850px;
+      margin-inline: auto;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 24px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      box-shadow: var(--shadow);
+    }
+
+    .card h2 {
+      margin-top: 0;
+      margin-bottom: 14px;
+      font-size: 1.45rem;
+    }
+
+    .question {
+      font-size: 1.05rem;
+      color: var(--text);
+      margin-bottom: 18px;
+      line-height: 1.6;
+    }
+
+    .options {
+      display: grid;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .option {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 16px;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      cursor: pointer;
+      transition: 0.2s ease;
+      background: #fbfdff;
+    }
+
+    .option:hover {
+      transform: translateY(-2px);
+      border-color: #93c5fd;
+      background: #f0f7ff;
+    }
+
+    .option input {
+      transform: scale(1.2);
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .option span {
+      font-size: 0.98rem;
+      line-height: 1.4;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 10px;
+    }
+
+    button {
+      border: none;
+      border-radius: 14px;
+      padding: 14px 18px;
+      font-size: 0.98rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.2s ease;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-dark);
+    }
+
+    .btn-secondary {
+      background: #e5eefc;
+      color: #1e3a8a;
+    }
+
+    .btn-secondary:hover {
+      background: #d9e7ff;
+    }
+
+    .message {
+      min-height: 24px;
+      margin-top: 14px;
+      font-weight: bold;
+      color: var(--success);
+    }
+
+    .summary {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .summary-box {
+      flex: 1 1 180px;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 14px;
+      background: #f8fbff;
+    }
+
+    .summary-label {
+      display: block;
+      color: var(--muted);
+      font-size: 0.9rem;
+      margin-bottom: 6px;
+    }
+
+    .summary-value {
+      font-size: 1.4rem;
+      font-weight: bold;
+    }
+
+    .chart-list {
+      display: grid;
+      gap: 14px;
+    }
+
+    .chart-item {
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 14px;
+      background: #fff;
+    }
+
+    .chart-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      font-size: 0.95rem;
+      margin-bottom: 8px;
+    }
+
+    .chart-head strong {
+      line-height: 1.4;
+    }
+
+    .bar-wrap {
+      width: 100%;
+      height: 14px;
+      background: #e5e7eb;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .bar {
+      height: 100%;
+      width: 0;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #2563eb, #60a5fa);
+      transition: width 0.4s ease;
+    }
+
+    .winner {
+      margin-top: 18px;
+      padding: 14px;
+      border-radius: 16px;
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      font-weight: bold;
+      line-height: 1.5;
+    }
+
+    .footer-note {
+      margin-top: 18px;
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.5;
+    }
+
+    @media (max-width: 860px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero,
+      .card {
+        padding: 20px;
+      }
+    }
+
+    @media (max-width: 520px) {
+      .container {
+        width: min(100% - 20px, 1100px);
+      }
+
+      button {
+        width: 100%;
+      }
+
+      .chart-head {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <section class="hero">
+      <img src="banner.png" alt="Feira de Negócios" style="width:100%; border-radius:16px; margin-bottom:16px;" />
+      <h1>🌟 FEIRA DE NEGÓCIOS 🌟</h1>
+      <p>
+        Vote e participe. Escolha o grupo que apresentou a proposta mais completa e estratégica na feira de negócios.
+      </p>
+    </section>
+
+    <section class="grid">
+      <article class="card">
+        <h2>Questionário</h2>
+        <div class="question">
+          <strong>Qual grupo apresentou a proposta mais completa e estratégica na feira de negócios?</strong><br>
+          <span style="color:#6b7280;">Considere organização da empresa, inovação, abordagem ao cliente e apresentação do stand.</span>
+        </div>
+
+        <form id="voteForm" class="options">
+          <label class="option"><input type="radio" name="empresa" value="Casas Coelho"><span>Casas Coelho</span></label>
+          <label class="option"><input type="radio" name="empresa" value="Coca Cola"><span>Coca Cola</span></label>
+          <label class="option"><input type="radio" name="empresa" value="Grupo Grão de Ouro e Supermercado Pinheiros"><span>Grupo Grão de Ouro e Supermercado Pinheiros</span></label>
+          <label class="option"><input type="radio" name="empresa" value="Lojas Cem e Supermercados Alvorada"><span>Lojas Cem e Supermercados Alvorada</span></label>
+          <label class="option"><input type="radio" name="empresa" value="Lojas Renner"><span>Lojas Renner</span></label>
+          <label class="option"><input type="radio" name="empresa" value="Nem Holland"><span>Nem Holland</span></label>
+          <label class="option"><input type="radio" name="empresa" value="Posto RVM"><span>Posto RVM</span></label>
+          <label class="option"><input type="radio" name="empresa" value="Supermercados Unissul"><span>Supermercados Unissul</span></label>
+        </form>
+
+        <div class="actions">
+          <button class="btn-primary" id="submitVote" type="button">Registrar voto</button>
+          <button class="btn-secondary" id="resetVotes" type="button">Zerar votos deste navegador</button>
+        </div>
+
+        <div class="message" id="message"></div>
+        <div class="footer-note">
+          As respostas ficam salvas no próprio navegador usando <strong>localStorage</strong>. Assim, ao recarregar a página neste mesmo navegador, os votos continuam registrados.
+        </div>
+      </article>
+
+      <article class="card">
+        <h2>Resultado parcial</h2>
+
+        <div class="summary">
+          <div class="summary-box">
+            <span class="summary-label">Total de votos</span>
+            <span class="summary-value" id="totalVotes">0</span>
+          </div>
+          <div class="summary-box">
+            <span class="summary-label">Grupo na frente</span>
+            <span class="summary-value" id="leader">-</span>
+          </div>
+        </div>
+
+        <div class="chart-list" id="chartList"></div>
+        <div class="winner" id="winnerBox">Nenhum voto registrado ainda.</div>
+      </article>
+    </section>
+  </div>
+
+  <script>
+    const KEY = 'feira_negocios_votos';
+
+    const grupos = [
+      'Casas Coelho',
+      'Coca Cola',
+      'Grupo Grão de Ouro e Supermercado Pinheiros',
+      'Lojas Cem e Supermercados Alvorada',
+      'Lojas Renner',
+      'Nem Holland',
+      'Posto RVM',
+      'Supermercados Unissul'
+    ];
+
+    function criarEstruturaInicial() {
+      return grupos.reduce((acc, grupo) => {
+        acc[grupo] = 0;
+        return acc;
+      }, {});
+    }
+
+    function obterVotos() {
+      const dados = localStorage.getItem(KEY);
+      if (!dados) {
+        const inicial = criarEstruturaInicial();
+        localStorage.setItem(KEY, JSON.stringify(inicial));
+        return inicial;
+      }
+
+      const votos = JSON.parse(dados);
+
+      grupos.forEach(grupo => {
+        if (typeof votos[grupo] !== 'number') votos[grupo] = 0;
+      });
+
+      return votos;
+    }
+
+    function salvarVotos(votos) {
+      localStorage.setItem(KEY, JSON.stringify(votos));
+    }
+
+    function totalDeVotos(votos) {
+      return Object.values(votos).reduce((total, qtd) => total + qtd, 0);
+    }
+
+    function ranking(votos) {
+      return [...Object.entries(votos)].sort((a, b) => b[1] - a[1]);
+    }
+
+    function renderizarGrafico() {
+      const votos = obterVotos();
+      const total = totalDeVotos(votos);
+      const rankingOrdenado = ranking(votos);
+      const chartList = document.getElementById('chartList');
+      const totalVotes = document.getElementById('totalVotes');
+      const leader = document.getElementById('leader');
+      const winnerBox = document.getElementById('winnerBox');
+
+      totalVotes.textContent = total;
+      chartList.innerHTML = '';
+
+      const lideres = rankingOrdenado.filter(item => item[1] === rankingOrdenado[0][1] && item[1] > 0).map(item => item[0]);
+
+      if (total === 0) {
+        leader.textContent = '-';
+        winnerBox.textContent = 'Nenhum voto registrado ainda.';
+      } else if (lideres.length > 1) {
+        leader.textContent = 'Empate';
+        winnerBox.textContent = 'No momento há um empate entre: ' + lideres.join(', ') + '.';
+      } else {
+        leader.textContent = lideres[0];
+        winnerBox.textContent = 'Quem está ganhando no momento: ' + lideres[0] + '.';
+      }
+
+      rankingOrdenado.forEach(([grupo, quantidade]) => {
+        const percentual = total > 0 ? (quantidade / total) * 100 : 0;
+
+        const item = document.createElement('div');
+        item.className = 'chart-item';
+        item.innerHTML = `
+          <div class="chart-head">
+            <strong>${grupo}</strong>
+            <span>${quantidade} voto(s) • ${percentual.toFixed(1)}%</span>
+          </div>
+          <div class="bar-wrap">
+            <div class="bar" style="width: ${percentual}%;"></div>
+          </div>
+        `;
+
+        chartList.appendChild(item);
+      });
+    }
+
+    function registrarVoto() {
+      const selecionado = document.querySelector('input[name="empresa"]:checked');
+      const message = document.getElementById('message');
+
+      if (!selecionado) {
+        message.style.color = '#dc2626';
+        message.textContent = 'Selecione uma opção antes de registrar o voto.';
+        return;
+      }
+
+      const votos = obterVotos();
+      votos[selecionado.value] += 1;
+      salvarVotos(votos);
+
+      message.style.color = '#16a34a';
+      message.textContent = 'Voto registrado com sucesso para: ' + selecionado.value;
+
+      document.getElementById('voteForm').reset();
+      renderizarGrafico();
+    }
+
+    function zerarVotos() {
+      const confirmar = confirm('Deseja realmente apagar todos os votos salvos neste navegador?');
+      if (!confirmar) return;
+
+      const inicial = criarEstruturaInicial();
+      salvarVotos(inicial);
+      document.getElementById('message').style.color = '#1d4ed8';
+      document.getElementById('message').textContent = 'Os votos deste navegador foram zerados.';
+      renderizarGrafico();
+    }
+
+    document.getElementById('submitVote').addEventListener('click', registrarVoto);
+    document.getElementById('resetVotes').addEventListener('click', zerarVotos);
+
+    renderizarGrafico();
+  </script>
+</body>
+</html>
